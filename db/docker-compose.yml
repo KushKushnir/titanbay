@@ -1,0 +1,16 @@
+services:
+    db:
+      image: postgres:17-alpine
+      restart: unless-stopped
+      environment:
+        POSTGRES_USER: ${PRIVATE_POSTGRES_USER}
+        POSTGRES_PASSWORD: ${PRIVATE_POSTGRES_PASS}
+        POSTGRES_DB: ${PRIVATE_POSTGRES_DB}
+      ports:
+        - "5433:5432"
+      volumes:
+        - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+
