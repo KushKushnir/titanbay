@@ -27,6 +27,9 @@ cd app && pnpm install
 # 4. Run migrations
 pnpm drizzle-kit migrate
 
+# Optional: seed sample data
+pnpm seed
+
 # 5. Start the dev server
 pnpm dev
 
