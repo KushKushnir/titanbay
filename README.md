@@ -15,11 +15,12 @@ A RESTful backend API for managing private market funds and investor commitments
 
 **Prerequisites**: Node.js, pnpm, Docker
 
-# 1. Start the database
-docker compose -f db/docker-compose.yml up -d
-
-# 2. Copy env file and fill in your values
+# 1. Copy env file and fill in your values (can leave them as they are)
 cp app/.env.example app/.env
+cp db/.env.example db/.env
+
+# 2. Start the database
+docker compose -f db/docker-compose.yml up -d
 
 # 3. Install dependencies
 cd app && pnpm install
@@ -42,6 +43,9 @@ pnpm test
 
 # Integration test (requires DB running)
 pnpm test:integration
+
+# Shut down
+docker compose -f ../db/docker-compose.yml down -v
 
 API
 
