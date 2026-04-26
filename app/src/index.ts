@@ -1,10 +1,12 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import fundsRouter from "./routes/funds/index.js";
+import investorsRouter from "./routes/investors/index.js";
 
 const app = new Hono();
 
 app.route("/funds", fundsRouter);
+app.route("/investors", investorsRouter);
 
 app.get("/", (c) => {
     return c.text("Hello from Titanbay!");
