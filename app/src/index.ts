@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import fundsRouter from "./routes/funds/index.js";
 import investorsRouter from "./routes/investors/index.js";
+import { fileURLToPath } from "url";
 
 const app = new Hono();
 
@@ -16,12 +17,16 @@ app.onError((error, c) => {
     return c.json({ error: "Internal server error" }, 500);
 });
 
-serve(
-    {
-        fetch: app.fetch,
-        port: 3000,
-    },
-    (info) => {
-        console.log(`Server is running on http://localhost:${info.port}`);
-    },
-);
+export { app };
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+    serve(
+        {
+            fetch: app.fetch,
+            port: 3000,
+        },
+        (info) => {
+            console.log(`Server is running on http://localhost:${info.port}`);
+        },
+    );
+}

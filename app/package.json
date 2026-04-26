@@ -4,7 +4,8 @@
 	"scripts": {
 		"dev": "tsx watch --env-file .env src/index.ts",
 		"build": "tsc",
-		"test": "vitest",
+		"test": "vitest --exclude '**/integration.test.ts'",
+		"test:integration": "vitest run src/integration.test.ts",
 		"start": "node dist/index.js"
 	},
 	"dependencies": {

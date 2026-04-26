@@ -8,7 +8,6 @@ vi.mock("$db/index.js", () => ({
         update: vi.fn(),
     },
 }));
-
 import { titanDb } from "$db/index.js";
 import fundsRouter from "./index.js";
 

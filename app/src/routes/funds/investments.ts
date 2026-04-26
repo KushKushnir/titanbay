@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { eq } from "drizzle-orm";
+import { eq, type InferSelectModel } from "drizzle-orm";
 import { titanDb } from "$db/index.js";
 import { funds, investments } from "$db/schema.js";
 import {
@@ -7,7 +7,6 @@ import {
     type CreateInvestment,
 } from "$validators/investments.js";
 import * as v from "valibot";
-import type { InferSelectModel } from "drizzle-orm";
 
 const investmentsRouter = new Hono();
 export default investmentsRouter;
