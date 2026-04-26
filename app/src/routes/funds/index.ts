@@ -8,8 +8,10 @@ import {
 } from "$validators/funds.js";
 import { eq, type InferSelectModel } from "drizzle-orm";
 import * as v from "valibot";
+import investmentsRouter from "./investments.js";
 
 const fundsRouter = new Hono();
+fundsRouter.route("/:fund_id/investments", investmentsRouter);
 export default fundsRouter;
 
 function formatFund(fund: InferSelectModel<typeof funds>) {
