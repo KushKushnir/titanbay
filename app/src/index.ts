@@ -1,15 +1,25 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import fundsRouter from "./routes/funds/index.js";
 
-const app = new Hono()
+const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.route("/funds", fundsRouter);
 
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+app.get("/", (c) => {
+    return c.text("Hello from Titanbay!");
+});
+app.onError((error, c) => {
+    console.error(error);
+    return c.json({ error: "Internal server error" }, 500);
+});
+
+serve(
+    {
+        fetch: app.fetch,
+        port: 3000,
+    },
+    (info) => {
+        console.log(`Server is running on http://localhost:${info.port}`);
+    },
+);
