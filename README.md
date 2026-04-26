@@ -1,6 +1,6 @@
 # Titanbay
 
-A RESTful backend API for managing private market funds and investor commitments.
+A RESTful backend API for managing private market funds, investors and investments.
 
 ## Stack
 
@@ -15,90 +15,96 @@ A RESTful backend API for managing private market funds and investor commitments
 
 **Prerequisites**: Node.js, pnpm, Docker
 
+```bash
 # 1. Copy env file and fill in your values (can leave them as they are)
 cp app/.env.example app/.env
 cp db/.env.example db/.env
 
 # 2. Start the database
 docker compose -f db/docker-compose.yml up -d
+```
 
+```bash
 # 3. Install dependencies
 cd app && pnpm install
+```
 
+```bash
 # 4. Run migrations
 pnpm drizzle-kit migrate
+```
 
+```bash
 # Optional: seed sample data
 pnpm seed
+```
 
+```bash
 # 5. Start the dev server
 pnpm dev
+```
 
 Server runs on http://localhost:3000.
 
-Testing
+## Testing
 
+```bash
 # Unit tests (no DB required)
 pnpm test
 
 # Integration test (requires DB running)
 pnpm test:integration
+```
 
-# Shut down
+## Shut down
+```bash
 docker compose -f ../db/docker-compose.yml down -v
+```
 
-API
+## API
 
-┌────────┬────────────────────────┬─────────────────────────────┐
-│ Method │          Path          │         Description         │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ GET    │ /funds                 │ List all funds              │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ POST   │ /funds                 │ Create a fund               │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ PUT    │ /funds                 │ Update a fund               │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ GET    │ /funds/:id             │ Get a fund                  │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ GET    │ /funds/:id/investments │ List investments for a fund │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ POST   │ /funds/:id/investments │ Add an investment to a fund │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ GET    │ /investors             │ List all investors          │
-├────────┼────────────────────────┼─────────────────────────────┤
-│ POST   │ /investors             │ Create an investor          │
-└────────┴────────────────────────┴─────────────────────────────┘
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/funds` | List all funds |
+| POST | `/funds` | Create a fund |
+| PUT | `/funds` | Update a fund |
+| GET | `/funds/:id` | Get a fund |
+| GET | `/funds/:id/investments` | List investments for a fund |
+| POST | `/funds/:id/investments` | Add an investment to a fund |
+| GET | `/investors` | List all investors |
+| POST | `/investors` | Create an investor |
 
 ## Design decisions
-## Stack
 
 - PUT /funds takes id in the request body. This matches the provided API spec rather than the more conventional PUT /funds/:id
 - Cascade deletes, deleting a fund or investor automatically removes their associated investments at the DB level
 - Numeric amounts as strings internally — Drizzle returns NUMERIC columns as strings to avoid floating point precision loss; they are parsed to numbers in API responses
 
-  Project structure
+## Project structure
 
-  app/
-    src/
-      index.ts               # Entry point, route mounting, error handler
-      routes/
-        funds/
-          index.ts           # GET, POST, PUT /funds
-          investments.ts     # GET, POST /funds/:id/investments
-        investors/
-          index.ts           # GET, POST /investors
-      db/
-        schema.ts            # Drizzle table and enum definitions
-        relations.ts         # Drizzle relation definitions
-        index.ts             # DB connection
-      validators/            # Valibot request body schemas
-    drizzle.config.ts
-  db/
-    docker-compose.yml
+```
+app/
+  src/
+    index.ts               # Entry point, route mounting, error handler
+    routes/
+      funds/
+        index.ts           # GET, POST, PUT /funds
+        investments.ts     # GET, POST /funds/:id/investments
+      investors/
+        index.ts           # GET, POST /investors
+    db/
+      schema.ts            # Drizzle table and enum definitions
+      relations.ts         # Drizzle relation definitions
+      index.ts             # DB connection
+    validators/            # Valibot request body schemas
+  drizzle.config.ts
+db/
+  docker-compose.yml
+```
 
 ## AI Usage
+
 - Used Claude Code as a pair programmer throughout, not a code generator.
 I directed the pace, reviewed every suggestion before applying it, caught mistakes, and made architectural decisions myself.
 - Also used the AI to flag issues
 - Also used as a test and documentation generator.
-
